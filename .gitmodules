@@ -7,3 +7,12 @@
 [submodule "OmpSs-1-DFiant"]
 	path = OmpSs-1-DFiant
 	url = https://github.com/DFiantHDL/DFiant
+[submodule "OmpSs-2/mcxx"]
+	path = OmpSs-2/mcxx
+	url = https://github.com/bsc-pm/mcxx
+[submodule "OmpSs-2/nanos6"]
+	path = OmpSs-2/nanos6
+	url = https://github.com/bsc-pm/nanos6
+[submodule "OmpSs-2/ompss-2-linter"]
+	path = OmpSs-2/ompss-2-linter
+	url = https://github.com/bsc-pm/ompss-2-linter
