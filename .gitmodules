@@ -16,3 +16,6 @@
 [submodule "OmpSs-2/ompss-2-linter"]
 	path = OmpSs-2/ompss-2-linter
 	url = https://github.com/bsc-pm/ompss-2-linter
+[submodule "OmpSs-2/xitao"]
+	path = OmpSs-2/xitao
+	url = https://github.com/CHART-Team/xitao
