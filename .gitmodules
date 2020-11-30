@@ -1,3 +1,9 @@
 [submodule "OmpSs-1"]
 	path = OmpSs-1
 	url = https://github.com/bsc-pm-ompss-at-fpga/ompss-at-fpga-releases
+[submodule "OmpSs-1-maxeler"]
+	path = OmpSs-1-maxeler
+	url = https://github.com/xavim/ompss-maxeler
+[submodule "OmpSs-1-DFiant"]
+	path = OmpSs-1-DFiant
+	url = https://github.com/DFiantHDL/DFiant
