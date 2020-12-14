@@ -1,0 +1,63 @@
+Matrix multiplication with CUDA and OpenCL for Nvidia GPUs and AMD GPUs and Intel FPGAs
+=======================================================================================
+
+This version of matrix multiplication uses "implements" to provide 3 versions
+of the matrix multiplication kernel:
+   * SMP version on a BLAS library (e.g. Intel MKL)
+   * CUDA kernel for Nvidia GPUs
+   * OpenCL kernel for AMD GPUs or Intel FPGAs
+
+Preparing the environment
+-------------------------
+
+$ source ./configure.sh will provide the environment variables needed to access
+the compilation and runtime tools
+
+The source code
+---------------
+
+The 3 kernels are annotated with OmpSs data directionality hints, which
+are used to describe the data transfers (copy_deps), and each one is
+an implementation of matrixMult, the OpenCL version:
+
+
+// OpenCL kernel
+
+#pragma omp target device(opencl) ndrange(2,NB,NB,BL_SIZE,BL_SIZE) copy_deps
+#pragma omp task inout([NB*NB]C) in([NB*NB]A,[NB*NB]B)
+__kernel void matrixMult(__global REAL* C,__global REAL* A, __global REAL* B,
+                        int wA, int wB);
+
+// CUDA kernel
+
+#pragma omp target device(cuda) ndrange(2,NB,NB,16,16) copy_deps \
+     implements(matrixMult)
+#pragma omp task inout([NB*NB]C) in([NB*NB]A,[NB*NB]B)
+__global__ void matrixMult_cuda(REAL* C, REAL* A,  REAL * B, int wA, int wB);
+
+
+// SMP kernel
+
+#pragma omp target device(smp) copy_deps implements(matrixMult)
+#pragma omp task in([bsize*bsize]A, [bsize*bsize]B) inout([bsize*bsize]C)
+void matrixMult_mkl(REAL  *C, REAL *A, REAL * B, int wa, int bsize);
+
+Compiling the benchmark
+-----------------------
+
+$ make matmul-p    # builds the production binary
+$ make matmul-i    # builds the instrumented binary
+$ make matmul-d    # builds the debug binary
+
+$ ./compile-kernel.sh   # builds the bitstream for Intel FPGAs
+
+Executing the benchmark
+-----------------------
+
+$ ./exec-bs128.sh  <num-threads> <num-cuda-gpus> <num-opencl-accels>
+   # executes the benchmark with the provided:
+      - num-threads: the number of SMP cores to be used
+      - num-cuda-gpus: the number of Nvidia CUDA GPUs to be used
+      - num-opencl-accels: the number of Intel FPGAs to be used
+
+

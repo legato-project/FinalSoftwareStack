@@ -1,1 +1,19 @@
-To be filled with examples
+Matrix multiplication examples based on the Final LEGaTO Stack
+==============================================================
+
+
+matmul-cuda-opencl
+------------------
+
+  Sample using acceleration kernels on CUDA and OpenCL
+
+
+matmul-ompss-fpga
+-----------------
+
+  Sample using acceleration kernel written for the HLS Xilinx FPGAs
+
+
+
+
+

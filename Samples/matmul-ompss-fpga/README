@@ -1,0 +1,58 @@
+Matrix multiplication with HLS for Xilinx FPGAs
+===============================================
+
+This version of matrix multiplication uses "implements" to provide 2 versions
+of the matrix multiplication kernel:
+   * SMP version on a BLAS library (e.g. OpenBLAS)
+   * HLS kernel for Xilinx FPGAs
+
+Preparing the environment
+-------------------------
+
+source ./env.sh will provide the environment variables needed to access the
+compilation and runtime tools
+
+
+The source code
+---------------
+
+The 2 kernels are annotated with OmpSs data directionality hints, which
+are used to describe the data transfers, and each one is an implementation of
+matmulBlock, the implementation for HLS. Read-only matrices A and B are
+not copied on the SMP kernel version:
+
+
+// HLS kernel
+
+#pragma omp target device(fpga) num_instances(3)
+#pragma omp task in([BSIZE*BSIZE]a, [BSIZE*BSIZE]b) inout([BSIZE*BSIZE]c)
+void matmulBlock(const elem_t *a, const elem_t *b, elem_t *c);
+
+
+// SMP kernel
+
+#pragma omp target device(smp) no_copy_deps implements(matmulBlock) \
+                copy_inout([BSIZE*BSIZE]c)
+#pragma omp task in([BSIZE*BSIZE]a, [BSIZE*BSIZE]b) inout([BSIZE*BSIZE]c)
+void matmulBlockSmp(elem_t *a, elem_t *b, elem_t *c) {
+
+
+Compiling the benchmark
+-----------------------
+
+$ make matmul-p    # builds the production binary
+$ make matmul-i    # builds the instrumentation binary
+$ make matmul-d    # builds the debug binary
+
+$ make bitstream-p   # builds the production bitstream
+$ make bitstream-i   # builds the instrumented bitstream
+
+$ make help        # provides additional help on the compilation alternatives
+
+Executing the benchmark
+-----------------------
+
+$ ./exec.sh <smp-threads> <fpga-num>   # executes the benchmark with
+         smp-threads   number of threads
+         fpga-num      number of IP cores (1 to 3 in matrix multiplication)
+
