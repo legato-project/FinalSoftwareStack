@@ -1,2 +1,32 @@
-The LEGaTo Final Software Stack
-- 
+# The LEGaTo Final Software Stack
+
+Integration of the OmpSs programming model with the different LEGaTO components.
+
+**Contents**
+
+OmpSs-1, including the integration with
+  - CUDA & OpenCL kernels (on GPUs and Intel FPGAs)
+  - FPGA (on Xilinx FPGAs, Zynq-7000, Zynq Ultrascale+ and Alveo support)
+  - DFiant (on Xilinx FPGAs)
+  - Maxeler SLiC (on Maxeler DFEs)
+
+  - and including:
+     * Eclipse plugin
+     * Conan recipes
+
+OmpSs-2, including the integration with
+  - CUDA kernels
+  - Clusters
+
+  - and including
+     * OmpSs@Linter for task and dependences debugging
+
+Samples
+  - matmul-cuda-opencl
+  - matmul-ompss-fpga
+
+
+---
+
+Please, see the INSTALL.md file in this repository for installation
+instructions.
